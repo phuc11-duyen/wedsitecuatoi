@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bắt Hình Tròn</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #74b9ff, #a29bfe);
+            text-align: center;
+            color: white;
+        }
+
+        h1 {
+            margin-top: 30px;
+            font-size: 36px;
+        }
+
+        .info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            font-size: 20px;
+            margin: 20px;
+        }
+
+        #game {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            height: 500px;
+            margin: auto;
+            background: rgba(255,255,255,0.25);
+            border: 3px solid white;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        #circle {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: #ff4757;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            box-shadow: 0 0 15px rgba(255,255,255,0.8);
+        }
+
+        button {
+            margin: 20px;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            background: white;
+            color: #6c5ce7;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        #message {
+            font-size: 22px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🎯 BẮT HÌNH TRÒN</h1>
+
+    <div class="info">
+        <div>Điểm: <span id="score">0</span></div>
+        <div>Thời gian: <span id="time">30</span>s</div>
+    </div>
+
+    <div id="game">
+        <div id="circle"></div>
+    </div>
+
+    <button onclick="startGame()">▶ Bắt đầu chơi</button>
+
+    <div id="message"></div>
+
+    <script>
+        let score = 0;
+        let time = 30;
+        let timer;
+
+        const circle = document.getElementById("circle");
+        const game = document.getElementById("game");
+
+        function startGame() {
+
+            score = 0;
+            time = 30;
+
+            document.getElementById("score").textContent = score;
+            document.getElementById("time").textContent = time;
+            document.getElementById("message").textContent = "";
+
+            circle.style.display = "block";
+
+            moveCircle();
+
+            clearInterval(timer);
+
+            timer = setInterval(function() {
+
+                time--;
+
+                document.getElementById("time").textContent = time;
+
+                if (time <= 0) {
+                    endGame();
+                }
+
+            }, 1000);
+        }
+
+        circle.onclick = function() {
+
+            score++;
+
+            document.getElementById("score").textContent = score;
+
+            moveCircle();
+        };
+
+        function moveCircle() {
+
+            const maxX = game.clientWidth - circle.offsetWidth;
+            const maxY = game.clientHeight - circle.offsetHeight;
+
+            const x = Math.random() * maxX;
+            const y = Math.random() * maxY;
+
+            circle.style.left = x + "px";
+            circle.style.top = y + "px";
+        }
+
+        function endGame() {
+
+            clearInterval(timer);
+
+            circle.style.display = "none";
+
+            document.getElementById("message").textContent =
+                "🎉 Hết giờ! Bạn được " + score + " điểm!";
+        }
+    </script>
+
+</body>
+</html>
